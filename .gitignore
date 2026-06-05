@@ -16,3 +16,7 @@ local.properties
 
 # Android Studio / IntelliJ
 /.idea/
+
+# Agent / SDD tooling (not app code)
+.claude/
+.specify/
