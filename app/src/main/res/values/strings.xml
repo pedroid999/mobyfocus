@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">MobyFocus</string>
+
+    <!-- Permission (US1) -->
+    <string name="permission_title">Usage Access needed</string>
+    <string name="permission_rationale">MobyFocus reads your device\'s app usage to show how you spend your attention today. Your data stays on this device. Grant Usage Access to continue.</string>
+    <string name="permission_open_settings">Open settings</string>
+
+    <!-- Dashboard (US2) -->
+    <string name="dashboard_title">Today\'s usage</string>
+    <string name="usage_minutes">%1$d min</string>
+    <string name="usage_less_than_minute">&lt;1 min</string>
+    <string name="app_icon_content_description">App icon</string>
+
+    <!-- Dashboard states (US3) -->
+    <string name="dashboard_empty">No app usage recorded today yet.</string>
+    <string name="dashboard_error">Couldn\'t load your usage. Please try again.</string>
+    <string name="dashboard_retry">Retry</string>
+</resources>
