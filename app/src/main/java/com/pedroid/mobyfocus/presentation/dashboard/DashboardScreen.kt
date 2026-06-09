@@ -1,6 +1,5 @@
 package com.pedroid.mobyfocus.presentation.dashboard
 
-import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,25 +13,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.drawable.toBitmap
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pedroid.mobyfocus.R
-import com.pedroid.mobyfocus.domain.model.AppUsage
+import com.pedroid.mobyfocus.domain.model.ClassifiedAppUsage
+import com.pedroid.mobyfocus.presentation.common.rememberAppIcon
+import com.pedroid.mobyfocus.presentation.common.usageLabel
 import com.pedroid.mobyfocus.presentation.dashboard.components.AppUsageRow
 
 @Composable
 fun DashboardRoute(
     contentPadding: PaddingValues,
+    onAppClick: (packageName: String) -> Unit,
     viewModel: DashboardViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -40,6 +37,7 @@ fun DashboardRoute(
         state = state,
         contentPadding = contentPadding,
         onRetry = viewModel::load,
+        onAppClick = onAppClick,
     )
 }
 
@@ -47,6 +45,7 @@ fun DashboardRoute(
 fun DashboardScreen(
     state: DashboardUiState,
     onRetry: () -> Unit,
+    onAppClick: (packageName: String) -> Unit = {},
     contentPadding: PaddingValues = PaddingValues(),
     modifier: Modifier = Modifier,
 ) {
@@ -70,13 +69,16 @@ fun DashboardScreen(
                 }
             }
 
-            is DashboardUiState.Content -> UsageList(apps = state.apps)
+            is DashboardUiState.Content -> UsageList(apps = state.apps, onAppClick = onAppClick)
         }
     }
 }
 
 @Composable
-private fun UsageList(apps: List<AppUsage>) {
+private fun UsageList(
+    apps: List<ClassifiedAppUsage>,
+    onAppClick: (packageName: String) -> Unit,
+) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             Text(
@@ -85,11 +87,12 @@ private fun UsageList(apps: List<AppUsage>) {
                 modifier = Modifier.padding(16.dp),
             )
         }
-        items(items = apps, key = { it.packageName }) { app ->
+        items(items = apps, key = { it.appUsage.packageName }) { item ->
             AppUsageRow(
-                app = app,
-                usageLabel = usageLabel(app.foregroundTimeMillis),
-                icon = rememberAppIcon(app.packageName),
+                item = item,
+                usageLabel = usageLabel(item.appUsage.foregroundTimeMillis),
+                icon = rememberAppIcon(item.appUsage.packageName),
+                onClick = onAppClick,
             )
         }
     }
@@ -112,24 +115,3 @@ private fun CenteredMessage(message: String) {
     }
 }
 
-@Composable
-private fun usageLabel(foregroundTimeMillis: Long): String =
-    if (foregroundTimeMillis < MILLIS_PER_MINUTE) {
-        stringResource(R.string.usage_less_than_minute)
-    } else {
-        stringResource(R.string.usage_minutes, (foregroundTimeMillis / MILLIS_PER_MINUTE).toInt())
-    }
-
-@Composable
-private fun rememberAppIcon(packageName: String): ImageBitmap? {
-    val context = LocalContext.current
-    return remember(packageName) {
-        try {
-            context.packageManager.getApplicationIcon(packageName).toBitmap().asImageBitmap()
-        } catch (_: PackageManager.NameNotFoundException) {
-            null
-        }
-    }
-}
-
-private const val MILLIS_PER_MINUTE = 60_000L

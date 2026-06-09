@@ -16,4 +16,20 @@
     <string name="dashboard_empty">No app usage recorded today yet.</string>
     <string name="dashboard_error">Couldn\'t load your usage. Please try again.</string>
     <string name="dashboard_retry">Retry</string>
+
+    <!-- App classification: the seven attention categories (002, FR-001) -->
+    <string name="category_productive">Productive</string>
+    <string name="category_communication">Communication</string>
+    <string name="category_learning">Learning</string>
+    <string name="category_entertainment">Entertainment</string>
+    <string name="category_social">Social</string>
+    <string name="category_distracting">Distracting</string>
+    <string name="category_neutral">Neutral</string>
+
+    <!-- App detail screen (002) -->
+    <string name="detail_title">App detail</string>
+    <string name="detail_usage_today_label">Today\'s usage</string>
+    <string name="detail_category_section_title">Attention category</string>
+    <string name="detail_save_error">Couldn\'t save the category. Your previous choice is still in effect.</string>
+    <string name="detail_back_content_description">Navigate back</string>
 </resources>
