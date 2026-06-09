@@ -6,6 +6,17 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
+    <!--
+      Package visibility (Android 11+): needed to resolve the display name and
+      icon of ALL apps the user has used. Usage/attention analysis is this app's
+      core function, which is a Google Play-allowed use case for QUERY_ALL_PACKAGES
+      (must be justified in the Play listing). Resolved data is shown on-device
+      only and never leaves the device (Constitution Principle I).
+    -->
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+
     <application
         android:name=".MobyFocusApplication"
         android:allowBackup="true"
