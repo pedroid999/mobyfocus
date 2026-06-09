@@ -1,7 +1,9 @@
 package com.pedroid.mobyfocus.di
 
+import com.pedroid.mobyfocus.data.repository.AppClassificationRepositoryImpl
 import com.pedroid.mobyfocus.data.repository.AppUsageRepositoryImpl
 import com.pedroid.mobyfocus.data.repository.UsageAccessRepositoryImpl
+import com.pedroid.mobyfocus.domain.repository.AppClassificationRepository
 import com.pedroid.mobyfocus.domain.repository.AppUsageRepository
 import com.pedroid.mobyfocus.domain.repository.UsageAccessRepository
 import dagger.Binds
@@ -18,4 +20,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindAppUsageRepository(impl: AppUsageRepositoryImpl): AppUsageRepository
+
+    @Binds
+    abstract fun bindAppClassificationRepository(
+        impl: AppClassificationRepositoryImpl,
+    ): AppClassificationRepository
 }
